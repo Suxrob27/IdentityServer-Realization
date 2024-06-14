@@ -1,0 +1,39 @@
+﻿@page
+@model IdentityServer.Pages.User.RegistrationModel
+@{
+}
+<h3>User Registration</h3>
+<br />
+<partial name="_NotificationPartialView">
+
+<div class="container mx-auto">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-6">
+            <h1 class="mb-3 h3">Register</h1>
+            <div class="text-danger" asp-validation-summary="All"></div>
+            <form method="post">
+                <div class="mb-3">
+                    <input asp-for="regModel.Name" class="form-label" />
+                    <span class="text-danger" asp-validation-for="regModel.Name"></span>
+                </div>
+                <div class="mb-3">
+                    <input asp-for="regModel.Email" class="form-label" />
+                    <span class="text-danger" asp-validation-for="regModel.Email"></span>
+                </div>
+                <div class="mb-3">
+                    <input asp-for="regModel.Password" class="form-label" />
+                    <span class="text-danger" asp-validation-for="regModel.Password"></span>
+
+                </div>
+                <div class="mb-3">
+                    <input asp-for="regModel.ConfirmPassword" class="form-label" />
+                    <span class="text-danger" asp-validation-for="regModel.ConfirmPassword"></span>
+
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn bg-dark text-light">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

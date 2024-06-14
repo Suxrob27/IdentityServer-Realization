@@ -1,0 +1,28 @@
+﻿@using IdentityServer.Notification
+
+@{
+    var notification = (NotificationModel)ViewData["Notification"];
+    if (notification != null)
+    {
+        string notificationType = "";
+        switch (notification.notificationType)
+        {
+            case IdentityServer.Notification.NotificationType.Success:
+                    notificationType = "alert-success";
+             break;
+             case IdentityServer.Notification.NotificationType.Failure:
+                    notificationType = "alert-danger";
+             break;
+             case IdentityServer.Notification.NotificationType.Info:
+                    notificationType = "alert-info";
+             break;
+        }
+
+        <div class="container mb-5">
+         <div class="alert @notificationType alert-dismissible fade show mb-5">
+           @Html.Raw(notification.Property);
+         </div>
+        </div>
+
+    }
+}

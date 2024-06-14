@@ -1,0 +1,50 @@
+﻿@page 
+@model IdentityServer.Pages.User.LogInModel
+@{
+}
+
+<h3>Log In</h3>
+<br />
+@if (Model.SignInResult.IsLockedOut)
+{
+    <div class="col-12 alert alert-danger d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill" /></svg>
+        <div>
+            Bro Your Accoutn Is Locked Out.You have Failed A lot of time.Your account will be after 30 minutes  :(
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+}
+<partial name="_NotificationPartialView">
+               
+<div class="container mx-auto">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-6">
+            <h1 class="mb-3 h3">Log In</h1>
+            <div class="text-danger" asp-validation-summary="All"></div>
+            <form method="post" >
+                <div class="mb-3">
+                    <input asp-for="registerModel.Email" class="form-label" />
+                    <span class="text-danger" asp-validation-for="registerModel.Email"></span>
+                </div>
+                <div class="mb-3">
+                    <input asp-for="registerModel.Password" class="form-label" />
+                    <span class="text-danger" asp-validation-for="registerModel.Password"></span>
+
+                </div>
+                <div class="mb-3">
+                    <label asp-for="registerModel.RememberMe" >Remember me</label>
+                    <input asp-for="registerModel.RememberMe" class="form-check-input" type="checkbox" />
+                 </div>
+
+                <div class="mb-3">
+                    <a asp-page="/Password/ForgotPassword">Forgot Password</a>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn bg-dark text-light">Log In</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
