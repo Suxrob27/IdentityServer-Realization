@@ -23,7 +23,11 @@ namespace IdentityServer.Pages.User
         }
         public void OnGet(string returnurl = null)
         {
-           
+            var notification = (string)TempData["Notification"];
+            if (notification != null)
+            {
+                ViewData["Notification"] = JsonSerializer.Deserialize<NotificationModel>(notification);
+            }
         }
         public async Task<IActionResult> OnPostAsync(string returnurl = null)
         {
@@ -37,7 +41,7 @@ namespace IdentityServer.Pages.User
                     notificationType = NotificationType.Success,    
                 };
                 TempData["Notification"] = JsonSerializer.Serialize(notification);
-                if (!string.IsNullOrEmpty(returnurl))
+                if (!string.IsNullOrEmpty(returnurl) && returnurl != "/User/Registration")
                 {
                     ViewData["Notification"] = new NotificationModel
                     {

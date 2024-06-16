@@ -6,5 +6,10 @@
 <partial name="_NotificationPartialView">
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
+    @if (User.Identity.IsAuthenticated)
+    {
+
+            <a asp-page="/TwoFactorAuthentication/EnableAuthenticator">Enable Two Factor Authentication</a>
+    }
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>

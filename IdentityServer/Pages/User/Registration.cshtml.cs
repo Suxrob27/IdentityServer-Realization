@@ -1,5 +1,6 @@
 using IdentityServer.Model.ViewModel;
 using IdentityServer.Notification;
+using IdentityServer.Servises;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,11 +17,13 @@ namespace IdentityServer.Pages.User
 
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
+        private readonly IEmailSender emailSender;
 
-        public RegistrationModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public RegistrationModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,IEmailSender emailSender)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.emailSender = emailSender;
         }
         public void OnGet(string returnUrl = null)
         {
@@ -37,20 +40,32 @@ namespace IdentityServer.Pages.User
                     Email = regModel.Email,
                 };
 
-                var result = await userManager.CreateAsync(user, regModel.Password);   
-                if(result.Succeeded) 
+                var result = await userManager.CreateAsync(user, regModel.Password);
+                if (result.Succeeded)
                 {
                     var notification = new NotificationModel
                     {
-                        Property = "Congratullations your Has Been Successfully Loged In",
+                        Property = "Broo Now Check Your Email And Confirm it, Leetsss Gooo",
                         notificationType = NotificationType.Success,
                     };
                     TempData["Notification"] = JsonSerializer.Serialize(notification);
 
-                    await signInManager.SignInAsync(user, isPersistent: false);
-                    return Redirect(returnUrl);
+                    var confirmToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var confirmationLink = Url.PageLink(pageName: "/ResetEmail/ConfirmationEmail",
+                        values: new { userId = user.Id, token = confirmToken }) ?? "";
+
+                    await emailSender.SendAsync("suxrobvjl1@gmail.com",
+                        user.Email,
+                        "Please Confirm Your Email",
+                        $"Please click on this link to confirm your email address : {confirmationLink}");
+                        return RedirectToPage("/User/Login");
+                        }
+                else
+                {
+
+                    AddErrors(result);
                 }
-                AddErrors(result);
+                   
             }
             return Page();
 

@@ -1,6 +1,7 @@
 using IdentityServer.Context;
 using IdentityServer.Model;
 using IdentityServer.Model.Model;
+using IdentityServer.Notification;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
+using System.Text.Json;
 
 namespace IdentityServer.Pages.User
 {
@@ -37,13 +39,13 @@ namespace IdentityServer.Pages.User
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await db.Users.Where(x => x.Email == forgotPassword.Email).FirstOrDefaultAsync();
-            if( user != null)
+            if (user != null)
             {
                 resetPassword.Email = forgotPassword.Email;
                 var code = await userManger.GeneratePasswordResetTokenAsync(user);
-            
+
                 var confirmationLink = Url.PageLink(pageName: "/Password/ResetPasswrod",
-                    values: new { userId = user.Id, code});
+                    values: new { userId = user.Id, code });
 
                 var message = new MailMessage("suxrobvjl1@gmail.com",
                     user.Email,
@@ -58,20 +60,26 @@ namespace IdentityServer.Pages.User
 
                     await emailClient.SendMailAsync(message);
                 }
-                ViewData["SuccessSend"] = "The resset page Was Sended to Your Email. Now you can reset Your Password";
+                var notification = new NotificationModel
+                {
+                    Property = "The Reset Password Was Sent To Your Email.Chek and Reset Your password",
+                    notificationType = NotificationType.Success
+                };
+                TempData["Notification"] = JsonSerializer.Serialize(notification);
+
                 return RedirectToPage("/user/login");
 
             }
-            if (user == null)
-            {
-                ViewData["ErrorUser"] = "The User Was not Found";
-            }
             else
             {
-                ViewData["ErrorUser"] = "Happened Some Error Try it Again Or Later";
+                var notification = new NotificationModel
+                {
+                    Property = "Sorryb but Smth Went Wrong Man. Try it Again Or Later",
+                    notificationType = NotificationType.Success
+                };
+                TempData["Notification"] = JsonSerializer.Serialize(notification);
+                return RedirectToPage("/user/login");
             }
-            return RedirectToPage("/user/login");
-
         }
 
     }
