@@ -1,6 +1,7 @@
 using IdentityServer.Context;
 using IdentityServer.Model;
 using IdentityServer.Model.Model;
+using IdentityServer.Pages.TwoFactorAuthentication;
 using IdentityServer.Servises;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ builder.Services.AddDbContext<ApplicationDB>
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDB>().AddDefaultTokenProviders();
 builder.Services.AddSingleton<ResetPassword>();
+
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.Configure<IdentityOptions>(opt =>
 {

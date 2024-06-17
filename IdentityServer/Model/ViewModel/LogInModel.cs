@@ -6,7 +6,6 @@ namespace IdentityServer.Model.ViewModel
     {
         [Required]
         [Display(Name = "Email")]
-        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         [Required]
         [Display(Name = "Password")]
