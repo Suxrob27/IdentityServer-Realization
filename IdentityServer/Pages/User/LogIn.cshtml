@@ -24,13 +24,14 @@
             <div class="text-danger" asp-validation-summary="All"></div>
             <form method="post" >
                 <div class="mb-3">
+                    <label asp-for="registerModel.Email"></label>
                     <input  asp-for="registerModel.Email" class="form-label" />
                     <span class="text-danger" asp-validation-for="registerModel.Email"></span>
                 </div>
                 <div class="mb-3">
+                        <label asp-for="registerModel.Password"></label>
                     <input asp-for="registerModel.Password" class="form-label" />
                     <span class="text-danger" asp-validation-for="registerModel.Password"></span>
-
                 </div>
                 <div class="mb-3">
                     <label asp-for="registerModel.RememberMe" >Remember me</label>

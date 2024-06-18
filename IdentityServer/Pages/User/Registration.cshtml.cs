@@ -36,8 +36,9 @@ namespace IdentityServer.Pages.User
             {
                 var user = new IdentityUser
                 {
-                    UserName = regModel.Name,
+                    UserName = regModel.Email,
                     Email = regModel.Email,
+                    NormalizedUserName = regModel.Name
                 };
 
                 var result = await userManager.CreateAsync(user, regModel.Password);

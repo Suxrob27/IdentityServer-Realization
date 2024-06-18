@@ -56,6 +56,10 @@ namespace IdentityServer.Pages.User
                     return LocalRedirect("/Index"); // Redirect to home page
                 }
             }
+            if (result.RequiresTwoFactor)
+            {
+                return RedirectToPage("/TwoFactorAuthentication/VerifyAuthenticationCode",returnurl);
+            }
             if (result.IsLockedOut)
             {
                
