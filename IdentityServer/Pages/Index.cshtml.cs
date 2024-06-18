@@ -14,13 +14,14 @@ namespace IdentityServer.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnGet()
         {
             var notification = (string)TempData["Notification"];
             if(notification != null)
             {
                 ViewData["Notification"] = JsonSerializer.Deserialize<NotificationModel>(notification);
             }
+            var user = await 
         }
     }
 }
