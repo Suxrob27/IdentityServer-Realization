@@ -13,10 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ApplicationDB>
     (opt => opt.UseSqlServer( builder.Configuration.GetConnectionString("DefaoultConnection"))) ;
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDB>().AddDefaultTokenProviders();
 builder.Services.AddSingleton<ResetPassword>();
-
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.Configure<IdentityOptions>(opt =>
 {
@@ -28,6 +27,10 @@ builder.Services.Configure<IdentityOptions>(opt =>
     opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);     
     opt.SignIn.RequireConfirmedEmail = false;      
     
+});
+builder.Services.ConfigureApplicationCookie(options => 
+{
+    options.AccessDeniedPath = new PathString("/Shared/AccessDeniedPage");
 });
 builder.Services.Configure<Smptsetting>(builder.Configuration.GetSection("SMTP"));
 var app = builder.Build();

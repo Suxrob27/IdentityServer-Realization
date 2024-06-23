@@ -1,14 +1,20 @@
+using IdentityServer.Model.Role;
 using IdentityServer.Model.ViewModel;
 using IdentityServer.Notification;
 using IdentityServer.Servises;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 using System.Text.Json;
 
+
 namespace IdentityServer.Pages.User
 {
+    [AllowAnonymous]
+
     public class RegistrationModel : PageModel
     {
         [BindProperty]
@@ -18,16 +24,33 @@ namespace IdentityServer.Pages.User
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly IEmailSender emailSender;
-
-        public RegistrationModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,IEmailSender emailSender)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public RegistrationModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,IEmailSender emailSender, RoleManager<IdentityRole> roleManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.emailSender = emailSender;
+           _roleManager = roleManager;
         }
-        public void OnGet(string returnUrl = null)
+        public async Task<IActionResult> OnGet(string returnUrl = null)
         {
+            if (!_roleManager.RoleExistsAsync(SD.Admin).GetAwaiter().GetResult())
+            {
+                await _roleManager.CreateAsync(new IdentityRole(SD.Admin));
+                await _roleManager.CreateAsync(new IdentityRole(SD.User));
+            }
 
+            regModel = new RegisterModel()
+            {
+                RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
+                {
+                    Text = i,
+                    Value = i   
+                })
+            };
+
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -43,7 +66,16 @@ namespace IdentityServer.Pages.User
 
                 var result = await userManager.CreateAsync(user, regModel.Password);
                 if (result.Succeeded)
-                {
+                { 
+                        if (regModel.RoleSelected != null && regModel.RoleSelected.Length > 0 && regModel.RoleSelected == SD.Admin)
+                        {
+                           await userManager.AddToRoleAsync(user, SD.Admin);
+                        }
+                        else
+                        {
+                           await userManager.AddToRoleAsync(user, SD.User);
+                        }
+
                     var notification = new NotificationModel
                     {
                         Property = "Broo Now Check Your Email And Confirm it, Leetsss Gooo",
@@ -63,6 +95,14 @@ namespace IdentityServer.Pages.User
                         }
                 else
                 {
+
+                    regModel.RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
+                    {
+                     Text = i,
+                     Value = i
+                    });
+                   
+
 
                     AddErrors(result);
                 }

@@ -1,4 +1,5 @@
 ﻿@page
+@using IdentityServer.Model.Role
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -18,6 +19,17 @@
             {
             <a asp-page="/TwoFactorAuthentication/EnableAuthenticator">Enable Two Factor Authentication</a>
             }
+
+            @if (User.IsInRole(SD.Admin))
+            {
+                <h2 class="text-success">Your role is - Admin</h2>
+            }
+            else
+            {
+                <h2 class="text-success">Your role is - USER</h2>
+            }
+
     }
+
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
