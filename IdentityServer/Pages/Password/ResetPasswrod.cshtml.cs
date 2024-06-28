@@ -1,4 +1,5 @@
 using IdentityServer.Context;
+using IdentityServer.Model;
 using IdentityServer.Model.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +12,13 @@ namespace IdentityServer.Pages.Password
     public class ResetPasswrodModel : PageModel
     {
         
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly ApplicationDB db;
 
         [BindProperty]
         public  ResetPassword resetPassword { get; set; }
         private static string Email { get; set; }
-        public ResetPasswrodModel(UserManager<IdentityUser> userManager, ApplicationDB _db, ResetPassword resetPassword)
+        public ResetPasswrodModel(UserManager<ApplicationUser> userManager, ApplicationDB _db, ResetPassword resetPassword)
         {
             this.userManager = userManager;
             db = _db;
@@ -30,7 +31,7 @@ namespace IdentityServer.Pages.Password
         public async Task<IActionResult> OnPostAsync(string code = null)
         {
 
-           var user =  await db.Users.Where(x => x.Email == Email).FirstOrDefaultAsync();
+           var user =  await userManager.FindByEmailAsync(resetPassword.Email);
 
             var result = await userManager.ResetPasswordAsync(user, code, resetPassword.Password);
             

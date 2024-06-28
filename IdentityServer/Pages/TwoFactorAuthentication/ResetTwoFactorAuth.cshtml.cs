@@ -1,3 +1,4 @@
+using IdentityServer.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -6,9 +7,9 @@ namespace IdentityServer.Pages.TwoFactorAuthentication
 {
     public class ResetTwoFactorAuthModel : PageModel
     {
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public ResetTwoFactorAuthModel(UserManager<IdentityUser> userManager)
+        public ResetTwoFactorAuthModel(UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
         }

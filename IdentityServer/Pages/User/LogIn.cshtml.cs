@@ -1,3 +1,4 @@
+using IdentityServer.Model;
 using IdentityServer.Model.ViewModel;
 using IdentityServer.Notification;
 using IdentityServer.Pages.User;
@@ -11,13 +12,13 @@ namespace IdentityServer.Pages.User
     public class LogInModel : PageModel
     {
         
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
         [BindProperty]
         public SignInModel registerModel { get; set; }
         public Microsoft.AspNetCore.Identity.SignInResult SignInResult = new Microsoft.AspNetCore.Identity.SignInResult();
 
-        public LogInModel(SignInManager<IdentityUser> signInManager)
+        public LogInModel(SignInManager<ApplicationUser> signInManager)
         {
             this.signInManager = signInManager;
         }

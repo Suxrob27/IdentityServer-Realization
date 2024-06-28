@@ -1,12 +1,14 @@
-using IdentityServer.Context;
+﻿using IdentityServer.Context;
 using IdentityServer.Model.Role;
 using IdentityServer.Notification;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Identity.Client;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 
 namespace IdentityServer.Pages.RoleManagement
 {
@@ -43,12 +45,14 @@ namespace IdentityServer.Pages.RoleManagement
         {
             if (string.IsNullOrEmpty(roleId))
             {
-                await roleManager.CreateAsync(new IdentityRole() { Name = IdentityRole.Name });
-                ViewData["Notification"] = new NotificationModel 
+                await roleManager.CreateAsync(new IdentityRole { Name = IdentityRole.Name});
+                var notification = ViewData["Notification"] = new NotificationModel
                 {
-                 Property = "Broooooo The new Role has been added",
-                 notificationType = NotificationType.Success 
+                    Property = "The Role Was Created SuccessFully",
+                    notificationType = NotificationType.Success
+
                 };
+                TempData["Notification"] = JsonSerializer.Serialize(notification);
                 return RedirectToPage("/RoleManagement/RoleList");
 
             }
@@ -59,14 +63,137 @@ namespace IdentityServer.Pages.RoleManagement
                 objFromDb.Name = IdentityRole.Name; 
                 objFromDb.NormalizedName = IdentityRole.Name.ToUpper(); 
                 var result = await roleManager.UpdateAsync(objFromDb);
-                ViewData["Notification"] = new NotificationModel
+                var notification = ViewData["Notification"] = new NotificationModel
                 {
-                    Property = "Broooooo The  Role has been updated",
+                    Property = "The Role Was Updated SuccessFully",
                     notificationType = NotificationType.Success
+
                 };
+                TempData["Notification"] = JsonSerializer.Serialize(notification);
+                return RedirectToPage("/RoleManagement/RoleList");
+            }
+        }
+        public async  Task<IActionResult> OnPostDelete(string roleId)
+        {
+            IdentityRole = await _db.Roles.FirstOrDefaultAsync(x => x.Id == roleId) ?? new IdentityRole();
+            var userRolesForThisrole = _db.UserRoles.Where(u => u.RoleId == roleId).Count();  
+            if (userRolesForThisrole > 0)
+            {
+                {
+                    {
+                        {
+                            {
+                                {
+                                    {
+                                        {
+                                            {
+                                                {
+                                                    {
+                                                        {
+                                                            {
+                                                                {
+                                                                    {
+                                                                        {
+                                                                            {
+                                                                                {
+                                                                                    {
+                                                                                        {
+                                                                                            {
+                                                                                                {
+                                                                                                    {
+                                                                                                        {
+                                                                                                            {
+                                                                                                                {
+                                                                                                                    {
+                                                                                                                        {
+                                                                                                                            {
+                                                                                                                                {
+                                                                                                                                    {
+                                                                                                                                        {
+                                                                                                                                            {
+                                                                                                                                                {
+                                                                                                                                                    {
+                                                                                                                                                        {
+                                                                                                                                                            {
+                                                                                                                                                                {
+                                                                                                                                                                    {
+                                                                                                                                                                        {
+                                                                                                                                                                            {
+                                                                                                                                                                                {
+                                                                                                                                                                                    var notification = ViewData["Notification"] = new NotificationModel
+                                                                                                                                                                                    {
+                                                                                                                                                                                        Property = "▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ Sorry Man But You can Not Delete This Role since there are users assigned to this role ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄",
+                                                                                                                                                                                        notificationType = NotificationType.Failure
+                                                                                                                                                                                    };
+                                                                                                                                                                                    TempData["Notification"] = JsonSerializer.Serialize(notification);
+                                                                                                                                                                                }
+                                                                                                                                                                            }
+                                                                                                                                                                        }
+                                                                                                                                                                    }
+                                                                                                                                                                }
+                                                                                                                                                            }
+                                                                                                                                                        }
+                                                                                                                                                    }
+                                                                                                                                                }
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            var result = await roleManager.DeleteAsync(IdentityRole);
+
+            if (result.Succeeded)
+            {
+                var notification = ViewData["Notification"] = new NotificationModel
+                {
+                    Property = "The Role Was Deleted Man",
+                    notificationType = NotificationType.Success
+
+                };
+                TempData["Notification"] = JsonSerializer.Serialize(notification);
+                return RedirectToPage("/RoleManagement/RoleList");
+            }
+
+            else
+            {
+                var notification =  ViewData["Notification"] = new NotificationModel
+                {
+                    Property = "Sorry Man But Smth Went Wrong",
+                    notificationType = NotificationType.Failure
+                };
+                TempData["Notification"] = JsonSerializer.Serialize(notification);
 
                 return RedirectToPage("/RoleManagement/RoleList");
             }
+
         }
     }
 }

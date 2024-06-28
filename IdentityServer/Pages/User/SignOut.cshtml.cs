@@ -1,3 +1,4 @@
+using IdentityServer.Model;
 using IdentityServer.Notification;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,9 +9,9 @@ namespace IdentityServer.Pages.User
 {
     public class SignOutModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
-        public SignOutModel(SignInManager<IdentityUser> signInManager)
+        public SignOutModel(SignInManager<ApplicationUser> signInManager)
         {
             this.signInManager = signInManager;
         }

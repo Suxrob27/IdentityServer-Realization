@@ -1,3 +1,4 @@
+using IdentityServer.Model;
 using IdentityServer.Notification;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +10,9 @@ namespace IdentityServer.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public IndexModel(ILogger<IndexModel> logger,UserManager<IdentityUser> userManager)
+        public IndexModel(ILogger<IndexModel> logger,UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
             this.userManager = userManager;

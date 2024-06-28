@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdentityServer.Migrations
 {
     [DbContext(typeof(ApplicationDB))]
-    [Migration("20240623053555_qwerty")]
+    [Migration("20240626105523_qwerty")]
     partial class qwerty
     {
         /// <inheritdoc />

@@ -10,9 +10,9 @@ namespace IdentityServer.Pages.TwoFactorAuthentication
     {
         [BindProperty]
         public VerifyAuthenticatorViewModel authModel { get; set; }  = new VerifyAuthenticatorViewModel();
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
-        public VerifyAuthenticationCode(SignInManager<IdentityUser> signInManager)
+        public VerifyAuthenticationCode(SignInManager<ApplicationUser> signInManager)
         {
             this.signInManager = signInManager;
         }

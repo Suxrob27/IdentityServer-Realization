@@ -1,4 +1,4 @@
-using IdentityServer.Context;
+ using IdentityServer.Context;
 using IdentityServer.Model;
 using IdentityServer.Model.Model;
 using IdentityServer.Notification;
@@ -15,14 +15,13 @@ namespace IdentityServer.Pages.User
 {
     public class ForgotPasswordModel : PageModel
     {
-        private readonly UserManager<IdentityUser> userManger;
+        private readonly UserManager<ApplicationUser> userManger;
         private readonly ApplicationDB db;
         private readonly IConfiguration configuration;
         private readonly IOptions<Smptsetting> smptSetting;
         private readonly ResetPassword resetPassword;
-        public ForgotPasswordModel(UserManager<IdentityUser> userManger, ApplicationDB _db, IConfiguration configuration, IOptions<Smptsetting> smptSetting, ResetPassword resetPassword)
+        public ForgotPasswordModel(UserManager<ApplicationUser> userManger, ApplicationDB _db, IConfiguration configuration, IOptions<Smptsetting> smptSetting, ResetPassword resetPassword)
         {
-         
             this.userManger = userManger;
             db = _db;
             this.configuration = configuration;
@@ -38,7 +37,7 @@ namespace IdentityServer.Pages.User
         [HttpPost]
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await db.Users.Where(x => x.Email == forgotPassword.Email).FirstOrDefaultAsync();
+            var user = await userManger.FindByEmailAsync(forgotPassword.Email);    
             if (user != null)
             {
                 resetPassword.Email = forgotPassword.Email;

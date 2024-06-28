@@ -2,6 +2,7 @@
 @model IdentityServer.Pages.RoleManagement.RoleListModel
 @{
 }
+<partial name="_NotificationPartialView">
 
 <br />
 <div class="card shadow border-0 mt-4">
@@ -38,8 +39,8 @@
                         <td>@item.Name</td>
                     <td>
                         <div class="text-center">
-                                <form asp-page="/RoleManagement/Delete" asp-route-roleId="@item.Id">
-                                <a asp-page="/RoleManagement/CreateRole" asp-route-roleId="@item.Id" class="btn btn-info text-white" style="cursor:pointer">Edit</a>
+                                    <form asp-page="/RoleManagement/CreateRole" asp-page-handler="Delete" asp-route-roleId="@item.Id">
+                                        <a asp-page="/RoleManagement/CreateRole"  asp-route-roleId="@item.Id" class="btn btn-info text-white" style="cursor:pointer">Edit</a>
 
                                 <button type="submit" onclick="return confirm('Are You SSSSUUUUURRRREEEEE?!')" class="btn btn-danger">
                                     DEEEELLLLEETTTEE

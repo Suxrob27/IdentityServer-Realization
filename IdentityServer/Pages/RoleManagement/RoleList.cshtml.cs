@@ -1,8 +1,10 @@
 using IdentityServer.Context;
+using IdentityServer.Notification;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace IdentityServer.Pages.RoleManagement
 {
@@ -19,6 +21,11 @@ namespace IdentityServer.Pages.RoleManagement
         }
         public IActionResult OnGet()
         {
+            var notification = (string)TempData["Notification"];
+            if (notification != null)
+            {
+                ViewData["Notification"] = JsonSerializer.Deserialize<NotificationModel>(notification);
+            }
             Roles = _dB.Roles.ToList();
             return Page();
         }

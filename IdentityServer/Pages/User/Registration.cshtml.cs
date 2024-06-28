@@ -1,3 +1,4 @@
+using IdentityServer.Model;
 using IdentityServer.Model.Role;
 using IdentityServer.Model.ViewModel;
 using IdentityServer.Notification;
@@ -21,16 +22,16 @@ namespace IdentityServer.Pages.User
          public RegisterModel regModel { get; set; }   
 
 
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IEmailSender emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public RegistrationModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,IEmailSender emailSender, RoleManager<IdentityRole> roleManager)
+        public RegistrationModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,IEmailSender emailSender, RoleManager<IdentityRole> roleManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.emailSender = emailSender;
-           _roleManager = roleManager;
+            _roleManager = roleManager;
         }
         public async Task<IActionResult> OnGet(string returnUrl = null)
         {
@@ -57,7 +58,7 @@ namespace IdentityServer.Pages.User
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser
+                var user = new ApplicationUser
                 {
                     UserName = regModel.Email,
                     Email = regModel.Email,

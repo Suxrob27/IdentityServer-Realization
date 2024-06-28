@@ -13,8 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ApplicationDB>
     (opt => opt.UseSqlServer( builder.Configuration.GetConnectionString("DefaoultConnection"))) ;
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDB>().AddDefaultTokenProviders();
+
 builder.Services.AddSingleton<ResetPassword>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.Configure<IdentityOptions>(opt =>

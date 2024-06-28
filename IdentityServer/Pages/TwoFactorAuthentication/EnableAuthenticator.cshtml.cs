@@ -13,12 +13,12 @@ namespace IdentityServer.Pages.TwoFactorAuthentication
     [ValidateAntiForgeryToken]
     public class EnableAuthenticatorModel : PageModel
     {
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly UrlEncoder _urlencoder;
         private readonly TwoFactorAuthenticationViewModel twoFactorAuthentication;
         [BindProperty]
         public TwoFactorAuthenticationViewModel tfAuthenticationModel { get; set; } 
-        public EnableAuthenticatorModel(UserManager<IdentityUser> userManager, UrlEncoder urlencoder)
+        public EnableAuthenticatorModel(UserManager<ApplicationUser> userManager, UrlEncoder urlencoder)
         {
             this.userManager = userManager;
             _urlencoder = urlencoder;
